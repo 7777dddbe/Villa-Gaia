@@ -1,0 +1,232 @@
+---
+import 'leaflet/dist/leaflet.css';
+import Missing from './Missing.astro';
+import site from '../config/sito.json';
+import { dictionary, fill, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = dictionary(lang);
+const l = t.location;
+const { indirizzo, distanzeAPiedi, mappa } = site;
+
+type Place = keyof typeof l.places;
+// Nearest first; a missing time goes last.
+const places = (Object.entries(distanzeAPiedi) as [string, number | null][])
+  .filter(([key]) => key in l.places)
+  .sort(([, a], [, b]) => (a ?? Infinity) - (b ?? Infinity))
+  .map(([key, minutes]) => ({ key: key as Place, minutes }));
+
+const address = `${indirizzo.via}, ${indirizzo.cap} ${indirizzo.citta} (${indirizzo.provincia})`;
+const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${indirizzo.via}, ${indirizzo.cap} ${indirizzo.citta}`)}`;
+
+const markers = Object.entries(mappa.luoghi).map(([key, p]) => ({ ...p, label: l.places[key as Place] }));
+const house = indirizzo.lat && indirizzo.lng ? { lat: indirizzo.lat, lng: indirizzo.lng, label: l.house } : null;
+const mapConfig = JSON.stringify({ markers, house });
+---
+
+<section id="location" class="section location" aria-labelledby="location-title">
+  <div class="container">
+    <h2 id="location-title" class="section__title" data-reveal>{l.title}</h2>
+    <p class="section__intro" data-reveal>{l.intro}</p>
+
+    <div class="location__grid">
+      <div class="location__text">
+        <h3 class="location__subtitle">{l.walkTitle}</h3>
+        <ul class="walks">
+          {
+            places.map(({ key, minutes }) => (
+              <li class="walks__item">
+                <span class="walks__time">
+                  {minutes === null ? (
+                    <Missing what={`sito.json → distanzeAPiedi → ${key}`} />
+                  ) : (
+                    <>
+                      <span class="walks__number">{minutes}</span> <span class="walks__unit">min</span>
+                    </>
+                  )}
+                </span>
+                <span class="walks__place">{l.places[key]}</span>
+              </li>
+            ))
+          }
+        </ul>
+
+        <address class="location__address">
+          {address}
+          <br />
+          <a href={mapsUrl} target="_blank" rel="noopener">{l.openMap}</a>
+        </address>
+      </div>
+
+      <div class="location__map-wrap">
+        <div class="location__map" data-reveal-frame role="region" aria-label={l.mapLabel} data-map data-config={mapConfig}></div>
+        {
+          !house && (
+            <p class="location__map-note">
+              <Missing what="sito.json → indirizzo.lat / indirizzo.lng" /> posizione esatta della casa
+            </p>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .location__grid {
+    display: grid;
+    gap: 2.5rem;
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .location__subtitle {
+    margin-bottom: 0.5rem;
+    color: var(--pietra);
+    font-family: var(--font-text);
+    font-size: var(--t-14);
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .walks {
+    padding: 0;
+    list-style: none;
+  }
+
+  .walks__item {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--linea);
+  }
+
+  .walks__time {
+    color: var(--garda);
+    white-space: nowrap;
+  }
+
+  .walks__time .da-completare {
+    font-size: var(--t-12);
+  }
+
+  .walks__number {
+    font-family: var(--font-display);
+    font-size: var(--t-48);
+    font-weight: var(--weight-display);
+    letter-spacing: var(--track-display);
+    line-height: 1;
+  }
+
+  .walks__unit {
+    font-size: var(--t-16);
+    font-weight: 500;
+  }
+
+  .walks__place {
+    font-size: var(--t-21);
+    line-height: 1.3;
+  }
+
+  .location__address {
+    margin-top: 1.75rem;
+    font-style: normal;
+    line-height: 1.7;
+  }
+
+  .location__address a {
+    font-weight: 600;
+    color: var(--garda);
+  }
+
+  .location__map-wrap {
+    position: relative;
+  }
+
+  .location__map {
+    aspect-ratio: 4 / 5;
+    max-height: 70vh;
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--r-lg);
+    background: var(--calcare);
+    box-shadow: var(--shadow-1);
+    z-index: 0;
+  }
+
+  /* Mappa in tinta con il sito: toni freddi, niente colori accesi */
+  .location__map .leaflet-tile-pane {
+    filter: grayscale(1) sepia(0.15) hue-rotate(140deg) saturate(0.9) brightness(1.04) contrast(0.92);
+  }
+
+  .location__map .leaflet-control-attribution {
+    font-family: var(--font-text);
+    font-size: 11px;
+    background: rgb(255 255 255 / 0.8);
+  }
+
+  .location__map .leaflet-bar a {
+    color: var(--lago);
+  }
+
+  .location__map-note {
+    margin-top: 0.75rem;
+    color: var(--pietra);
+    font-size: var(--t-14);
+  }
+
+  .map-pin {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    width: max-content;
+    transform: translate(-6px, -50%);
+    color: var(--lago);
+    font-family: var(--font-text);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    text-shadow:
+      0 0 3px #fff,
+      0 0 3px #fff,
+      0 0 6px #fff;
+  }
+
+  .map-pin::before {
+    content: '';
+    flex: none;
+    width: 12px;
+    height: 12px;
+    border: 2.5px solid #fff;
+    border-radius: 50%;
+    background: var(--ulivo);
+    box-shadow: 0 1px 3px rgb(12 46 54 / 0.35);
+  }
+
+  .map-pin--house {
+    font-size: 15px;
+  }
+
+  .map-pin--house::before {
+    width: 18px;
+    height: 18px;
+    background: var(--garda);
+  }
+
+  @media (min-width: 56rem) {
+    .location__grid {
+      grid-template-columns: 1fr 1.15fr;
+      align-items: start;
+      gap: clamp(3rem, 7vw, 6rem);
+    }
+
+    .location__map {
+      aspect-ratio: 1 / 1;
+    }
+  }
+</style>

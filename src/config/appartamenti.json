@@ -1,0 +1,66 @@
+{
+  "_leggimi": "I dati di ogni appartamento. I testi tradotti (tipo, piano, vista, servizi) sono in src/i18n. null = [DA COMPLETARE]. Le foto vanno in src/assets/foto/<id>/ (es. src/assets/foto/gaia1/). Il nome compare anche nel titolo degli eventi di Google Calendar, ad esempio 'Gaia 1 - famiglia Müller'.",
+  "_nota_verifica": "[DA VERIFICARE] Piano, vista, posti letto, tipo e foto dei tre appartamenti sono stimati dalle foto: confermare con il proprietario.",
+  "appartamenti": [
+    {
+      "id": "gaia1",
+      "nome": "Gaia 1",
+      "tipo": "appartamento",
+      "piano": "terra",
+      "vista": "giardino",
+      "postiLetto": 4,
+      "letti": null,
+      "metraturaMq": null,
+      "cin": null,
+      "servizi": [
+        "parcheggio",
+        "wifi",
+        "cucina",
+        "tv",
+        "riscaldamento",
+        "piscina",
+        "terrazza"
+      ]
+    },
+    {
+      "id": "gaia2",
+      "nome": "Gaia 2",
+      "tipo": "appartamento",
+      "piano": "primo",
+      "vista": "lago_ulivi",
+      "postiLetto": 4,
+      "letti": null,
+      "metraturaMq": null,
+      "cin": null,
+      "servizi": [
+        "parcheggio",
+        "wifi",
+        "cucina",
+        "tv",
+        "riscaldamento",
+        "piscina",
+        "terrazza"
+      ]
+    },
+    {
+      "id": "gaia3",
+      "nome": "Gaia 3",
+      "tipo": "appartamento",
+      "piano": "primo",
+      "vista": "lago_ulivi",
+      "postiLetto": 2,
+      "letti": null,
+      "metraturaMq": null,
+      "cin": null,
+      "servizi": [
+        "parcheggio",
+        "wifi",
+        "cucina",
+        "tv",
+        "riscaldamento",
+        "piscina",
+        "terrazza"
+      ]
+    }
+  ]
+}

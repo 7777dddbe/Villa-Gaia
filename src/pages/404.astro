@@ -1,0 +1,65 @@
+---
+import '@fontsource-variable/inter/opsz.css';
+import '../styles/global.css';
+import { dictionary, languages, pathFor } from '../i18n';
+
+// One page for every language: Netlify shows it for any address that does not exist.
+const texts = {
+  en: 'This page does not exist.',
+  de: 'Diese Seite gibt es nicht.',
+  it: 'Questa pagina non esiste.',
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Villa Gaia</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <main class="lost container">
+      <p class="lost__name">Villa Gaia</p>
+      <ul>
+        {
+          languages.map((l) => (
+            <li lang={l}>
+              {texts[l]} <a href={pathFor(l)}>{dictionary(l).nav.home.split(',')[1]?.trim() ?? 'Home'}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </main>
+  </body>
+</html>
+
+<style>
+  .lost {
+    display: grid;
+    align-content: center;
+    gap: 2rem;
+    min-height: 100svh;
+  }
+
+  .lost__name {
+    font-family: var(--font-display);
+    font-size: clamp(var(--t-48), 10vw, 7rem);
+    line-height: 1;
+  }
+
+  ul {
+    display: grid;
+    gap: 0.5rem;
+    padding: 0;
+    list-style: none;
+    font-size: var(--t-21);
+  }
+
+  a {
+    color: var(--garda);
+    font-weight: 600;
+  }
+</style>

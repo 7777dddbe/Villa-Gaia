@@ -1,0 +1,27 @@
+{
+  "name": "villa-gaia",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Sito di Villa Gaia, appartamenti vacanze con piscina a Malcesine (Lago di Garda)",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "dati-mancanti": "node scripts/dati-mancanti.mjs",
+    "ritaglia-cielo": "node scripts/ritaglia-cielo.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "5.3.0",
+    "astro": "7.3.8",
+    "gsap": "3.15.0",
+    "leaflet": "1.9.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@types/leaflet": "1.9.22",
+    "@types/node": "22.20.5",
+    "typescript": "6.0.3"
+  }
+}

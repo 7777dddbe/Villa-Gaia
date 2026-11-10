@@ -1,0 +1,68 @@
+---
+import { dictionary, languages, pathFor, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = dictionary(lang);
+---
+
+<nav class="lang" aria-label={t.nav.language}>
+  <ul>
+    {
+      languages.map((l) => (
+        <li>
+          <a
+            href={pathFor(l)}
+            hreflang={l}
+            lang={l}
+            aria-label={t.langNames[l]}
+            aria-current={l === lang ? 'page' : undefined}
+          >
+            {l.toUpperCase()}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .lang ul {
+    display: flex;
+    gap: 0.125rem;
+    padding: 0.1875rem;
+    list-style: none;
+    border-radius: var(--r-pill);
+    box-shadow: inset 0 0 0 1px currentColor;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 22%, transparent);
+  }
+
+  .lang a {
+    display: grid;
+    place-items: center;
+    min-width: 2.25rem;
+    height: 2rem;
+    padding-inline: 0.5rem;
+    border-radius: var(--r-pill);
+    font-size: var(--t-12);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    opacity: 0.72;
+    transition:
+      opacity var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out);
+  }
+
+  .lang a:hover {
+    opacity: 1;
+  }
+
+  .lang a[aria-current='page'] {
+    opacity: 1;
+    background: color-mix(in srgb, currentColor 12%, transparent);
+  }
+</style>

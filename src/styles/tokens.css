@@ -1,0 +1,74 @@
+/*
+  Villa Gaia, design tokens.
+  Colori presi da Malcesine: l'acqua del Garda, la pietra calcarea del Monte Baldo, gli ulivi.
+*/
+:root {
+  /* Colori */
+  --calce: #ffffff;          /* sfondo */
+  --calcare: #eef0ee;        /* superfici: box di ricerca, footer */
+  --lago: #0c2e36;           /* testo */
+  --garda: #0e6a73;          /* azione: prezzo diretto, pulsanti */
+  --garda-scuro: #0a555c;    /* pulsanti al passaggio del mouse */
+  --ulivo: #6f7f5e;          /* dettagli: animali ammessi, icone */
+  --pietra: #6e767a;         /* testo secondario, prezzo Booking */
+  --linea: rgb(12 46 54 / 0.12);
+  --errore: #a3362a;         /* messaggi di errore (contrasto 6:1 sul bianco) */
+  --notte: rgb(6 26 31);     /* base delle velature sopra le foto */
+  --hero-ink: var(--lago);   /* testo sopra la foto dell'hero (cielo chiaro) */
+
+  /* Tipografia */
+  /* Uno stile alla Apple: un solo carattere, Inter (parente stretto del San Francisco di Apple).
+     I titoli usano il taglio "display" di Inter, grassetto e con lettere strette. */
+  --font-display: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-text: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --weight-display: 650;
+  --track-display: -0.035em;
+
+  /* Scala tipografica (Bringhurst): 12 14 16 18 21 24 36 48 60 72 */
+  --t-12: 0.75rem;
+  --t-14: 0.875rem;
+  --t-16: 1rem;
+  --t-18: 1.125rem;
+  --t-21: 1.3125rem;
+  --t-24: 1.5rem;
+  --t-36: 2.25rem;
+  --t-48: 3rem;
+  --t-60: 3.75rem;
+  --t-72: 4.5rem;
+  --t-hero: clamp(3rem, 12.5vw, 9.5rem);
+  --t-h2: clamp(var(--t-36), 5.5vw + 1rem, var(--t-72));
+
+  /* Spazi e misure */
+  --gutter: clamp(1rem, 5vw, 3rem);
+  --max: 76rem;
+  --section: clamp(5rem, 12vw, 10rem);
+  --header-h: 4rem;
+
+  /* Raggi: più grande è l'elemento, più morbido l'angolo */
+  --r-lg: 28px;
+  --r-md: 16px;
+  --r-sm: 10px;
+  --r-pill: 999px;
+
+  /* Ombre a più livelli, al posto dei bordi */
+  --shadow-1:
+    0 0 0 1px rgb(12 46 54 / 0.06),
+    0 1px 2px -1px rgb(12 46 54 / 0.06),
+    0 2px 4px 0 rgb(12 46 54 / 0.04);
+  --shadow-2:
+    0 0 0 1px rgb(12 46 54 / 0.05),
+    0 8px 24px -8px rgb(12 46 54 / 0.18),
+    0 28px 56px -28px rgb(12 46 54 / 0.24);
+
+  /* Movimento: curve personalizzate, mai il semplice "ease" */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 160ms;
+  --dur-base: 240ms;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --header-h: 4.5rem;
+  }
+}

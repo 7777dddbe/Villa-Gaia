@@ -1,0 +1,209 @@
+---
+import LangSwitch from './LangSwitch.astro';
+import { dictionary, pathFor, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = dictionary(lang);
+const links = [
+  { href: '#apartments', label: t.nav.apartments },
+  { href: '#villa', label: t.nav.villa },
+  { href: '#location', label: t.nav.location },
+  { href: '#reviews', label: t.nav.reviews },
+  { href: '#contact', label: t.nav.contact },
+];
+---
+
+<header class="header" data-header>
+  <div class="header__bar container" data-intro>
+    <a class="wordmark" href={pathFor(lang)} aria-label={t.nav.home}>Villa Gaia</a>
+
+    <nav class="header__nav" aria-label={t.nav.menu}>
+      <ul>
+        {links.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="header__tools">
+      <LangSwitch lang={lang} />
+      <button
+        class="menu-btn"
+        type="button"
+        aria-expanded="false"
+        aria-controls="menu"
+        data-menu-toggle
+        data-label-open={t.nav.menu}
+        data-label-close={t.nav.close}
+      >
+        <span class="visually-hidden" data-menu-label>{t.nav.menu}</span>
+        <span class="menu-btn__lines" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Outside the header on purpose: the header's backdrop-filter would trap a fixed child inside it. -->
+<div class="menu" id="menu" hidden data-menu>
+  <nav class="container" aria-label={t.nav.menu}>
+    <ul class="menu__list">
+      {links.map((link) => <li><a href={link.href} data-menu-link>{link.label}</a></li>)}
+    </ul>
+  </nav>
+</div>
+
+<style>
+  .header {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 50;
+    color: var(--lago);
+    background: rgb(255 255 255 / 0.86);
+    box-shadow: 0 1px 0 var(--linea);
+    -webkit-backdrop-filter: saturate(180%) blur(18px);
+    backdrop-filter: saturate(180%) blur(18px);
+    transition:
+      background-color var(--dur-base) var(--ease-out),
+      box-shadow var(--dur-base) var(--ease-out),
+      color var(--dur-base) var(--ease-out);
+  }
+
+  /* Sopra la foto dell'hero: trasparente, testo nel colore dell'hero */
+  .header:global(.is-over-hero):not(:global(.is-menu-open)) {
+    color: var(--hero-ink);
+    background: transparent;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .header__bar {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    height: var(--header-h);
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 650;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .header__nav {
+    display: none;
+    margin-left: auto;
+  }
+
+  .header__nav ul {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  .header__nav a {
+    font-size: var(--t-16);
+    font-weight: 500;
+    text-decoration: none;
+    opacity: 0.82;
+    transition: opacity var(--dur-fast) var(--ease-out);
+  }
+
+  .header__nav a:hover {
+    opacity: 1;
+  }
+
+  .header__tools {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+  }
+
+  .menu-btn {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-right: -0.625rem;
+    border-radius: var(--r-pill);
+  }
+
+  .menu-btn__lines,
+  .menu-btn__lines::before {
+    display: block;
+    width: 1.125rem;
+    height: 1.5px;
+    background: currentColor;
+    border-radius: 2px;
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+
+  .menu-btn__lines {
+    position: relative;
+    transform: translateY(-3px);
+  }
+
+  .menu-btn__lines::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6px;
+  }
+
+  .menu-btn[aria-expanded='true'] .menu-btn__lines {
+    transform: translateY(0) rotate(45deg);
+  }
+
+  .menu-btn[aria-expanded='true'] .menu-btn__lines::before {
+    transform: translateY(-6px) rotate(-90deg);
+  }
+
+  /* Menu a tutto schermo su telefono */
+  .menu {
+    position: fixed;
+    inset: var(--header-h) 0 0 0;
+    z-index: 49;
+    overflow-y: auto;
+    background: var(--calce);
+    color: var(--lago);
+  }
+
+  .menu__list {
+    list-style: none;
+    padding: 2rem 0 3rem;
+  }
+
+  .menu__list a {
+    display: block;
+    padding-block: 0.5rem;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 9vw, 2.75rem);
+    font-weight: var(--weight-display);
+    line-height: 1.15;
+    letter-spacing: var(--track-display);
+    text-decoration: none;
+  }
+
+  @media (min-width: 56rem) {
+    .header__nav {
+      display: block;
+    }
+
+    .header__tools {
+      margin-left: 0;
+    }
+
+    .menu-btn,
+    .menu {
+      display: none;
+    }
+  }
+</style>

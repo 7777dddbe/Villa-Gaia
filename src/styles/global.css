@@ -1,0 +1,224 @@
+@import './tokens.css';
+
+/* Reset essenziale */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: var(--header-h);
+}
+
+body {
+  min-height: 100vh;
+  background: var(--calce);
+  color: var(--lago);
+  font-family: var(--font-text);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+@media (min-width: 48rem) {
+  body {
+    font-size: var(--t-18);
+  }
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  line-height: 1.04;
+  letter-spacing: var(--track-display);
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Focus sempre visibile da tastiera */
+:focus-visible {
+  outline: 2px solid var(--garda);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: rgb(14 106 115 / 0.18);
+}
+
+/* Utilità */
+.container {
+  width: 100%;
+  max-width: calc(var(--max) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--r-pill);
+  background: var(--lago);
+  color: var(--calce);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus-visible {
+  transform: none;
+}
+
+/* Sezioni */
+.section {
+  padding-block: var(--section);
+}
+
+.section__title {
+  font-size: var(--t-h2);
+  max-width: 14ch;
+}
+
+.section__intro {
+  margin-top: 1.25rem;
+  max-width: 38ch;
+  font-size: var(--t-21);
+  line-height: 1.45;
+  color: var(--pietra);
+}
+
+/* Pulsanti */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 3.25rem;
+  padding: 0 1.6rem;
+  border-radius: var(--r-pill);
+  background: var(--garda);
+  color: var(--calce);
+  font-weight: 600;
+  font-size: var(--t-16);
+  letter-spacing: 0.005em;
+  text-decoration: none;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.btn:hover {
+  background: var(--garda-scuro);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn--quiet {
+  background: transparent;
+  color: var(--lago);
+  box-shadow: inset 0 0 0 1px var(--linea);
+}
+
+.btn--quiet:hover {
+  background: rgb(12 46 54 / 0.04);
+}
+
+/* Segnaposto per i dati mancanti: ben visibile finché non lo riempi */
+.da-completare {
+  display: inline-block;
+  padding: 0.05em 0.45em;
+  border: 1px dashed #b07d1a;
+  border-radius: 6px;
+  background: #fff6de;
+  color: #6b4a00;
+  font-family: var(--font-text);
+  font-size: 0.85em;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+/* Movimento ridotto: le animazioni si fermano, lo stato finale resta */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+  Elementi che entrano con l'animazione iniziale: nascosti solo quando
+  JavaScript e movimento sono attivi, e comunque mostrati dopo 4 secondi.
+*/
+.motion [data-intro] {
+  visibility: hidden;
+}
+
+.intro-done [data-intro] {
+  visibility: visible;
+}

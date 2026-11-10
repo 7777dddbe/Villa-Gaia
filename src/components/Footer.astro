@@ -1,0 +1,133 @@
+---
+import LangSwitch from './LangSwitch.astro';
+import Missing from './Missing.astro';
+import site from '../config/sito.json';
+import { dictionary, fill, type Lang } from '../i18n';
+import { isMissing } from '../lib/placeholder';
+import { hasWhatsApp, whatsappUrl } from '../lib/whatsapp';
+import { petFriendlyNames } from '../lib/booking-rules';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = dictionary(lang);
+const { indirizzo, orari, codici, contatti } = site;
+const email = contatti.email;
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container">
+    <p class="footer__name">Villa Gaia</p>
+
+    <div class="footer__grid">
+      <section>
+        <h2>{t.footer.address}</h2>
+        <address>
+          {indirizzo.via}<br />
+          {indirizzo.cap} {indirizzo.citta} ({indirizzo.provincia})<br />
+          Italia
+        </address>
+      </section>
+
+      <section>
+        <h2>{t.footer.stay}</h2>
+        <ul>
+          <li>{fill(t.footer.checkIn, { ora: orari.checkIn, fino: orari.checkInFino })}</li>
+          <li>{fill(t.footer.checkOut, { ora: orari.checkOut })}</li>
+          <li>{petFriendlyNames.length ? t.footer.rules : t.footer.rulesNoPets}</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>{t.footer.contact}</h2>
+        <ul>
+          <li>
+            WhatsApp:{' '}
+            {hasWhatsApp ? <a href={whatsappUrl()}>{t.contact.whatsapp}</a> : <Missing what="sito.json → contatti.whatsapp" />}
+          </li>
+          <li>
+            Email:{' '}
+            {isMissing(email) ? <Missing what="sito.json → contatti.email" /> : <a href={`mailto:${email}`}>{email}</a>}
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>{t.footer.codes}</h2>
+        <ul class="footer__codes">
+          {codici.registrazione.map((code) => <li>{code}</li>)}
+          {!isMissing(codici.cin) && <li>CIN {codici.cin}</li>}
+          {!isMissing(codici.loc) && <li>LOC {codici.loc}</li>}
+        </ul>
+      </section>
+    </div>
+
+    <div class="footer__bottom">
+      <p>{fill(t.footer.rights, { anno: year })}</p>
+      <LangSwitch lang={lang} />
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding-block: clamp(4rem, 9vw, 7rem) 2rem;
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+    background: var(--calcare);
+    font-size: var(--t-16);
+    line-height: 1.6;
+  }
+
+  .footer__name {
+    font-family: var(--font-display);
+    font-size: clamp(var(--t-48), 9vw, 7.5rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+  }
+
+  .footer__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 2.5rem 2rem;
+    margin-top: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .footer h2 {
+    margin-bottom: 0.625rem;
+    font-family: var(--font-text);
+    font-size: var(--t-14);
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--pietra);
+  }
+
+  .footer ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .footer address {
+    font-style: normal;
+  }
+
+  .footer__codes {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: clamp(3rem, 7vw, 5rem);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--linea);
+    color: var(--pietra);
+    font-size: var(--t-14);
+  }
+</style>

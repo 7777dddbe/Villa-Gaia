@@ -1,0 +1,91 @@
+{
+  "_leggimi": "Impostazioni generali del sito. Cambia solo i valori a destra dei due punti. Dove trovi [DA COMPLETARE] manca ancora il dato vero.",
+  "nome": "Villa Gaia",
+  "dominio": "https://residencevillagaia.com",
+  "contatti": {
+    "_nota_whatsapp": "Solo cifre, con prefisso internazionale e senza + o spazi. Esempio: 393331234567",
+    "whatsapp": "393667065555",
+    "email": "villagaiamalcesine@gmail.com"
+  },
+  "prenotazione": {
+    "_nota": "[DA VERIFICARE] Stagione, sconto e soggiorno minimo sono valori di partenza: confermarli. La stagione vale per tutti gli anni (formato MM-GG).",
+    "scontoDirettoPercentuale": 10,
+    "soggiornoMinimoNotti": 2,
+    "stagione": {
+      "apertura": "04-01",
+      "chiusura": "10-31"
+    },
+    "anniPrenotabiliInAvanti": 2
+  },
+  "animali": {
+    "_nota": "[DA VERIFICARE] true = animali ammessi in quell'appartamento. Il vecchio sito ha il campo 'Cane/Hund' nel modulo: confermare la regola. supplementoTipo può essere per_soggiorno oppure per_notte.",
+    "ammessi": {
+      "gaia1": false,
+      "gaia2": false,
+      "gaia3": false
+    },
+    "supplementoEuro": 0,
+    "supplementoTipo": "per_soggiorno"
+  },
+  "tassaSoggiorno": {
+    "_nota": "[DA VERIFICARE] Non entra nel totale: viene mostrata come nota sotto il prezzo. Importo del Comune di Malcesine, da confermare.",
+    "euroPerPersonaANotte": 2
+  },
+  "orari": {
+    "checkIn": "15:30",
+    "checkInFino": "22:00",
+    "checkOut": "09:30"
+  },
+  "indirizzo": {
+    "via": "Via San Marco 4",
+    "cap": "37018",
+    "citta": "Malcesine",
+    "provincia": "VR",
+    "_nota_coordinate": "[DA COMPLETARE] latitudine e longitudine esatte dell'ingresso, servono per la mappa",
+    "lat": null,
+    "lng": null
+  },
+  "mappa": {
+    "_nota": "Coordinate pubbliche prese da OpenStreetMap (ottobre 2026). La casa compare sulla mappa quando indirizzo.lat e indirizzo.lng sono compilati.",
+    "luoghi": {
+      "funivia": {
+        "lat": 45.7662,
+        "lng": 10.81339
+      },
+      "castello": {
+        "lat": 45.76619,
+        "lng": 10.80852
+      },
+      "centro": {
+        "lat": 45.76311,
+        "lng": 10.80806
+      }
+    }
+  },
+  "codici": {
+    "_nota": "Codici di registrazione degli appartamenti, dal vecchio sito. [DA COMPLETARE] CIN e LOC ufficiali, se ci sono.",
+    "registrazione": [
+      "M023045441",
+      "M023045442",
+      "M023045443"
+    ],
+    "loc": "[DA COMPLETARE]",
+    "cin": "[DA COMPLETARE]"
+  },
+  "distanzeAPiedi": {
+    "_nota": "Minuti a piedi dalla villa. Spiaggia a circa 300 m, centro storico a circa 1 km (dal sito di Villa Gaia). Se non ci sono funivia o castello qui sotto, non compaiono nell'elenco.",
+    "spiaggia": 5,
+    "centro": 15
+  },
+  "whatsapp": {
+    "_nota": "Il messaggio parte sempre in inglese. Le parole tra graffe vengono sostituite dal sito.",
+    "messaggioPrenotazione": "Hi! I'd like to book {appartamento} from {arrivo} to {partenza}, {ospiti}, {animali}. Direct price shown: € {prezzo}.",
+    "messaggioGenerico": "Hi! I'd like some information about your apartments.",
+    "messaggioPrezzoSuRichiesta": "Hi! I'd like to book {appartamento} from {arrivo} to {partenza}, {ospiti}, {animali}. Could you tell me the price?",
+    "messaggioNessunaDisponibilita": "Hi! I'm looking for an apartment from {arrivo} to {partenza}, {ospiti}, {animali}. Is anything available?",
+    "ospiteUno": "1 guest",
+    "ospitiPiu": "{n} guests",
+    "conAnimale": "with a pet",
+    "senzaAnimale": "no pets"
+  }
+}

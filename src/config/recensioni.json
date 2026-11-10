@@ -1,0 +1,18 @@
+{
+  "_leggimi": "Voto e recensioni degli ospiti. Il voto 4,9 su 5 con 41 recensioni viene dal vecchio sito (FeWo-direkt). [DA COMPLETARE] Copia qui il testo delle recensioni vere, una per riga come l'esempio in _esempio.",
+  "booking": {
+    "voto": 4.9,
+    "su": 5,
+    "numeroRecensioni": 41,
+    "link": null
+  },
+  "recensioni": [],
+  "_esempio": {
+    "nome": "Nome",
+    "paese": "Germania",
+    "data": "Giugno 2017",
+    "appartamento": null,
+    "lingua": "de",
+    "testo": "Testo della recensione nella lingua originale"
+  }
+}
