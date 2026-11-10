@@ -1,0 +1,55 @@
+{
+  "_leggimi": [
+    "Prezzi Booking.com A NOTTE, in euro, per ogni appartamento e periodo.",
+    "Il prezzo diretto NON si scrive qui: il sito lo calcola togliendo lo sconto impostato in sito.json.",
+    "I periodi usano mese-giorno (MM-GG) e valgono per tutti gli anni. 'al' è l'ultima notte inclusa.",
+    "Le date speciali hanno anche l'anno (AAAA-MM-GG) e vincono sui periodi. 'al' è l'ultima notte inclusa."
+  ],
+  "_attenzione": "[DA COMPLETARE] PREZZI E PERIODI: i periodi sono da confermare, i prezzi sono vuoti. Finché un prezzo è null, il sito invita a chiedere il prezzo su WhatsApp.",
+  "periodi": {
+    "bassa": [
+      {
+        "dal": "04-01",
+        "al": "05-31"
+      },
+      {
+        "dal": "10-01",
+        "al": "10-31"
+      }
+    ],
+    "media": [
+      {
+        "dal": "06-01",
+        "al": "06-30"
+      },
+      {
+        "dal": "09-01",
+        "al": "09-30"
+      }
+    ],
+    "alta": [
+      {
+        "dal": "07-01",
+        "al": "08-31"
+      }
+    ]
+  },
+  "prezziANotte": {
+    "gaia1": {
+      "bassa": null,
+      "media": null,
+      "alta": null
+    },
+    "gaia2": {
+      "bassa": null,
+      "media": null,
+      "alta": null
+    },
+    "gaia3": {
+      "bassa": null,
+      "media": null,
+      "alta": null
+    }
+  },
+  "dateSpeciali": []
+}

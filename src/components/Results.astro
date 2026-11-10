@@ -1,0 +1,365 @@
+---
+import { Picture } from 'astro:assets';
+import Missing from './Missing.astro';
+import PhotoPlaceholder from './PhotoPlaceholder.astro';
+import data from '../config/appartamenti.json';
+import { dictionary, fill, type Lang } from '../i18n';
+import { photosOf } from '../lib/photos';
+import { touristTaxPerPersonNight } from '../lib/pricing';
+import { hasWhatsApp } from '../lib/whatsapp';
+import '../lib/price-check';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = dictionary(lang);
+const r = t.results;
+const money = new Intl.NumberFormat(t.locale, { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+const taxNote = fill(r.tax, { euro: money.format(touristTaxPerPersonNight) });
+const config = JSON.stringify({ locale: t.locale, texts: r, search: t.search });
+---
+
+<section id="results" class="results" data-results data-config={config} hidden aria-labelledby="results-title">
+  <div class="container">
+    <header class="results__head">
+      <div>
+        <h2 id="results-title" class="results__title" data-results-title tabindex="-1">{r.title}</h2>
+        <p class="results__summary" data-results-summary></p>
+      </div>
+      <button type="button" class="btn btn--quiet" data-results-change>{r.change}</button>
+    </header>
+
+    <p class="results__status" data-results-status role="status"></p>
+    <div class="results__list" data-results-list></div>
+  </div>
+
+  {
+    data.appartamenti.map((apt) => {
+      const photo = photosOf(apt.id)[0];
+      return (
+        <template data-card={apt.id}>
+          <article class="card" aria-labelledby={`card-${apt.id}`}>
+            <div class="card__media">
+              {photo ? (
+                <Picture
+                  src={photo}
+                  alt=""
+                  formats={['avif', 'webp']}
+                  widths={[480, 720, 960]}
+                  sizes="(min-width: 64rem) 30vw, (min-width: 48rem) 45vw, 100vw"
+                  loading="lazy"
+                />
+              ) : (
+                <PhotoPlaceholder
+                  label={`${apt.nome}, cartella src/assets/foto/${apt.id}`}
+                  tone={apt.vista === 'giardino_privato' ? 'garden' : 'lake'}
+                />
+              )}
+            </div>
+
+            <div class="card__body">
+              <header>
+                <h3 class="card__name" id={`card-${apt.id}`}>{apt.nome}</h3>
+                <p class="card__meta">
+                  {t.types[apt.tipo as keyof typeof t.types]}
+                  <br />
+                  {fill(t.apartments.sleeps, { n: apt.postiLetto })}. {t.apartments.view}: {t.views[apt.vista as keyof typeof t.views]}
+                </p>
+              </header>
+
+              <div class="card__prices" data-slot="prices">
+                <p class="card__nights" data-slot="nights"></p>
+                <div class="price price--booking">
+                  <span class="price__label">{r.booking}</span>
+                  <span class="price__value" data-slot="booking"></span>
+                </div>
+                <div class="price price--direct">
+                  <span class="price__label" data-slot="saving"></span>
+                  <span class="price__value">
+                    <span aria-hidden="true" data-slot="direct-shown"></span>
+                    <span class="visually-hidden" data-slot="direct"></span>
+                  </span>
+                  <span class="price__average" data-slot="average"></span>
+                </div>
+              </div>
+              <p class="card__note" data-slot="price-missing" hidden>{r.priceMissing}</p>
+              <p class="card__note" data-slot="pet-fee" hidden></p>
+
+              <div class="card__actions">
+                <a class="btn card__cta" data-slot="cta" href="#" target="_blank" rel="noopener">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 3.5c-4.7 0-8.5 3.4-8.5 7.6 0 1.7.6 3.2 1.6 4.4L4 20.5l5.3-1.7c.9.3 1.8.4 2.7.4 4.7 0 8.5-3.4 8.5-7.6S16.7 3.5 12 3.5Z"></path>
+                  </svg>
+                  {r.book}
+                  <span class="visually-hidden">. {r.openWhatsApp}</span>
+                </a>
+                {!hasWhatsApp && <Missing what="numero WhatsApp in sito.json → contatti.whatsapp" />}
+              </div>
+              <p class="card__tax">{taxNote}</p>
+            </div>
+          </article>
+        </template>
+      );
+    })
+  }
+
+  <template data-empty>
+    <div class="empty">
+      <p class="empty__reason" data-slot="reason"></p>
+      <p class="empty__text" data-slot="text">{r.noneText}</p>
+      <a class="btn" data-slot="cta" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 3.5c-4.7 0-8.5 3.4-8.5 7.6 0 1.7.6 3.2 1.6 4.4L4 20.5l5.3-1.7c.9.3 1.8.4 2.7.4 4.7 0 8.5-3.4 8.5-7.6S16.7 3.5 12 3.5Z"></path>
+        </svg>
+        {r.noneCta}
+        <span class="visually-hidden">. {r.openWhatsApp}</span>
+      </a>
+    </div>
+  </template>
+</section>
+
+<style is:global>
+  .results {
+    padding-block: clamp(3.5rem, 8vw, 6rem) 0;
+  }
+
+  .results__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.25rem 2rem;
+  }
+
+  .results__title {
+    font-size: clamp(var(--t-36), 3.5vw + 1rem, var(--t-60));
+  }
+
+  .results__title:focus {
+    outline: none;
+  }
+
+  .results__summary {
+    margin-top: 0.75rem;
+    color: var(--pietra);
+    font-size: var(--t-18);
+  }
+
+  .results__status {
+    margin-top: 1.5rem;
+    color: var(--pietra);
+    font-size: var(--t-16);
+  }
+
+  .results__status:empty {
+    display: none;
+  }
+
+  .results__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 21.5rem), 1fr));
+    gap: 1.5rem;
+    margin-top: clamp(1.75rem, 4vw, 2.75rem);
+  }
+
+  /* ---------- Card ---------- */
+  .card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    overflow: clip;
+    border-radius: var(--r-lg);
+    background: var(--calce);
+    box-shadow: var(--shadow-2);
+  }
+
+  .card__media {
+    aspect-ratio: 16 / 10;
+    background: var(--calcare);
+  }
+
+  .card__media picture,
+  .card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.5rem 1.5rem 1.75rem;
+  }
+
+  .card__name {
+    font-size: var(--t-36);
+    line-height: 1;
+  }
+
+  .card__meta {
+    margin-top: 0.5rem;
+    color: var(--pietra);
+    font-size: var(--t-16);
+    line-height: 1.5;
+  }
+
+  /* Il confronto prezzi: Booking.com a sinistra, il diretto a destra e più grande,
+     con i due importi sulla stessa linea di base */
+  .card__prices {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+    padding-block: 1rem 1.25rem;
+    border-block: 1px solid var(--linea);
+  }
+
+  .card__nights {
+    grid-column: 1 / -1;
+    margin-bottom: 0.875rem;
+    font-size: var(--t-14);
+    font-weight: 600;
+  }
+
+  .price {
+    display: contents;
+  }
+
+  .price--booking > * {
+    grid-column: 1;
+    padding-right: 1rem;
+  }
+
+  .price--direct > * {
+    grid-column: 2;
+    padding-left: 1.25rem;
+    border-left: 1px solid var(--linea);
+  }
+
+  .price__label {
+    grid-row: 2;
+    align-self: end;
+    padding-bottom: 0.5rem;
+    font-size: var(--t-14);
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--pietra);
+  }
+
+  .price__value {
+    grid-row: 3;
+    align-self: last baseline;
+    font-variant-numeric: lining-nums tabular-nums;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .price--booking .price__value {
+    color: var(--pietra);
+    font-size: var(--t-24);
+  }
+
+  .price--direct .price__label {
+    color: var(--garda);
+  }
+
+  .price--direct .price__value {
+    color: var(--garda);
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 7vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+  }
+
+  .price__average {
+    grid-row: 4;
+    padding-top: 0.375rem;
+    color: var(--pietra);
+    font-size: var(--t-14);
+  }
+
+  .card__note {
+    font-size: var(--t-16);
+  }
+
+  .card__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-top: auto;
+  }
+
+  .card__cta {
+    width: 100%;
+  }
+
+  .card__cta svg,
+  .empty .btn svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linejoin: round;
+  }
+
+  .card__tax {
+    color: var(--pietra);
+    font-size: var(--t-14);
+    line-height: 1.45;
+  }
+
+  /* Un solo appartamento libero: su schermi larghi la card si apre in orizzontale */
+  @media (min-width: 56rem) {
+    .results__list:has(> .card:only-child) .card {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+    }
+
+    .results__list:has(> .card:only-child) .card__media {
+      aspect-ratio: auto;
+      min-height: 100%;
+    }
+
+    .results__list:has(> .card:only-child) .card__body {
+      padding: 2rem 2.25rem 2.25rem;
+    }
+  }
+
+  /* ---------- Nessun risultato ---------- */
+  .empty {
+    grid-column: 1 / -1;
+    max-width: 40rem;
+    padding: clamp(1.75rem, 4vw, 2.5rem);
+    border-radius: var(--r-lg);
+    background: var(--calcare);
+  }
+
+  .empty__reason {
+    font-size: var(--t-21);
+    line-height: 1.4;
+  }
+
+  .empty__reason:empty {
+    display: none;
+  }
+
+  .empty__text {
+    margin-top: 0.5rem;
+    color: var(--pietra);
+  }
+
+  .empty__reason:empty + .empty__text {
+    margin-top: 0;
+    color: var(--lago);
+    font-size: var(--t-21);
+    line-height: 1.4;
+  }
+
+  .empty .btn {
+    margin-top: 1.5rem;
+  }
+</style>

@@ -1,0 +1,744 @@
+---
+import site from '../config/sito.json';
+import { dictionary, fill, type Lang } from '../i18n';
+import { maxGuests, petFriendlyNames } from '../lib/booking-rules';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = dictionary(lang);
+const s = t.search;
+const { stagione, soggiornoMinimoNotti } = site.prenotazione;
+
+// "1 April", "1. April", "1 aprile": the season limits written in the page's language.
+const dayMonth = new Intl.DateTimeFormat(t.locale, { day: 'numeric', month: 'long', timeZone: 'UTC' });
+const seasonDay = (mmdd: string) => dayMonth.format(new Date(`2000-${mmdd}T00:00:00Z`));
+const seasonNote = fill(s.seasonNote, {
+  apertura: seasonDay(stagione.apertura),
+  chiusura: seasonDay(stagione.chiusura),
+  minimo: soggiornoMinimoNotti,
+});
+
+const defaultGuests = Math.min(2, maxGuests);
+const petsWelcome = petFriendlyNames.length > 0;
+const config = JSON.stringify({ locale: t.locale, texts: s });
+---
+
+<form class:list={['booking', { 'booking--no-pet': !petsWelcome }]} data-booking data-intro data-config={config} novalidate>
+  <h2 class="visually-hidden">{s.title}</h2>
+
+  <div class="booking__grid">
+    <button
+      type="button"
+      class="booking__cell booking__cell--arrival field"
+      data-date-field="arrival"
+      aria-haspopup="dialog"
+      aria-controls="calendar"
+    >
+      <span class="field__label">{s.arrival}</span>
+      <span class="field__value is-empty" data-date-value="arrival">{s.addDate}</span>
+    </button>
+
+    <button
+      type="button"
+      class="booking__cell booking__cell--departure field"
+      data-date-field="departure"
+      aria-haspopup="dialog"
+      aria-controls="calendar"
+    >
+      <span class="field__label">{s.departure}</span>
+      <span class="field__value is-empty" data-date-value="departure">{s.addDate}</span>
+    </button>
+
+    <div class="booking__cell booking__cell--guests field field--row" role="group" aria-labelledby="guests-label">
+      <span class="field__label" id="guests-label">{s.guests}</span>
+      <div class="stepper">
+        <button type="button" class="stepper__btn" data-guests-step="-1" aria-label={s.guestsDecrease}>
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"></path></svg>
+        </button>
+        <output class="stepper__value" data-guests-value aria-live="polite">{defaultGuests}</output>
+        <button type="button" class="stepper__btn" data-guests-step="1" aria-label={s.guestsIncrease}>
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9M8 3.5v9"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    {
+      petsWelcome && (
+        <label class="booking__cell booking__cell--pet field field--row switch">
+          <span class="field__label switch__text">{s.pet}</span>
+          <input class="switch__input" type="checkbox" role="switch" data-pet />
+          <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+        </label>
+      )
+    }
+
+    <div class="booking__cell booking__cell--submit">
+      <button type="submit" class="btn booking__submit">{s.submit}</button>
+    </div>
+  </div>
+
+  <p class="booking__note" data-booking-note aria-live="polite" hidden></p>
+</form>
+
+<dialog class="cal" id="calendar" data-calendar aria-labelledby="cal-title">
+  <div class="cal__scrim" data-cal-close></div>
+  <div class="cal__panel" data-cal-panel>
+    <header class="cal__head">
+      <div>
+        <h2 id="cal-title" class="cal__title">{s.calendarTitle}</h2>
+        <p class="cal__season">{seasonNote}</p>
+      </div>
+      <button type="button" class="cal__icon-btn" data-cal-close aria-label={s.close}>
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"></path></svg>
+      </button>
+    </header>
+
+    <div class="cal__body">
+      <button type="button" class="cal__icon-btn cal__arrow cal__arrow--prev" data-cal-prev aria-label={s.prevMonth}>
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3.5L5.5 8l4.5 4.5"></path></svg>
+      </button>
+      <button type="button" class="cal__icon-btn cal__arrow cal__arrow--next" data-cal-next aria-label={s.nextMonth}>
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5L10.5 8 6 12.5"></path></svg>
+      </button>
+      <div class="cal__months" data-cal-months></div>
+    </div>
+
+    <footer class="cal__foot">
+      <p class="cal__status" data-cal-status aria-live="polite"></p>
+      <div class="cal__actions">
+        <button type="button" class="cal__clear" data-cal-clear>{s.clear}</button>
+        <button type="button" class="btn cal__done" data-cal-done>{s.done}</button>
+      </div>
+    </footer>
+  </div>
+</dialog>
+
+<style is:global>
+  /* ---------- Box di ricerca ---------- */
+  .booking {
+    position: relative;
+    margin-top: clamp(1.75rem, 4vw, 2.75rem);
+    padding: 0.375rem;
+    border-radius: var(--r-lg);
+    background: rgb(255 255 255 / 0.95);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    backdrop-filter: blur(20px) saturate(160%);
+    box-shadow: var(--shadow-2);
+    color: var(--lago);
+  }
+
+  .booking__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'arrival departure'
+      'guests guests'
+      'pet pet'
+      'submit submit';
+  }
+
+  .booking__cell {
+    position: relative;
+  }
+
+  .booking__cell--arrival { grid-area: arrival; }
+  .booking__cell--departure { grid-area: departure; }
+  .booking__cell--guests { grid-area: guests; }
+  .booking__cell--pet { grid-area: pet; }
+  .booking__cell--submit { grid-area: submit; }
+
+  /* Separatori sottili tra le celle */
+  .booking__cell::before {
+    content: '';
+    position: absolute;
+    background: var(--linea);
+    pointer-events: none;
+  }
+
+  .booking__cell--departure::before {
+    left: 0;
+    top: 0.875rem;
+    bottom: 0.875rem;
+    width: 1px;
+  }
+
+  .booking__cell--guests::before,
+  .booking__cell--pet::before {
+    top: 0;
+    left: 1rem;
+    right: 1rem;
+    height: 1px;
+  }
+
+  .booking__cell--arrival::before,
+  .booking__cell--submit::before {
+    display: none;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.125rem;
+    width: 100%;
+    min-height: 4.25rem;
+    padding: 0.75rem 1rem;
+    border-radius: calc(var(--r-lg) - 0.375rem);
+    text-align: left;
+  }
+
+  .field--row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  button.field {
+    transition: background-color var(--dur-fast) var(--ease-out);
+  }
+
+  button.field:hover {
+    background: rgb(12 46 54 / 0.045);
+  }
+
+  .field__label {
+    font-size: var(--t-14);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .field__value {
+    font-size: var(--t-16);
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  @media (min-width: 24rem) {
+    .field__value {
+      font-size: var(--t-18);
+      white-space: nowrap;
+    }
+  }
+
+  .field__value.is-empty {
+    color: var(--pietra);
+    font-weight: 400;
+  }
+
+  /* Ospiti */
+  .stepper {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .stepper__btn {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px rgb(12 46 54 / 0.2);
+    transition:
+      box-shadow var(--dur-fast) var(--ease-out),
+      opacity var(--dur-fast) var(--ease-out),
+      transform var(--dur-fast) var(--ease-out);
+  }
+
+  .stepper__btn svg,
+  .cal__icon-btn svg {
+    width: 1rem;
+    height: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .stepper__btn:hover {
+    box-shadow: inset 0 0 0 1px rgb(12 46 54 / 0.5);
+  }
+
+  .stepper__btn:active {
+    transform: scale(0.94);
+  }
+
+  .stepper__btn[aria-disabled='true'] {
+    opacity: 0.3;
+    cursor: default;
+  }
+
+  .stepper__btn[aria-disabled='true']:active {
+    transform: none;
+  }
+
+  .stepper__value {
+    display: inline-block;
+    min-width: 2rem;
+    font-size: var(--t-18);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+
+  /* Interruttore animale */
+  .switch {
+    cursor: pointer;
+  }
+
+  .switch__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  .switch__track {
+    position: relative;
+    flex: none;
+    width: 3.125rem;
+    height: 1.875rem;
+    border-radius: var(--r-pill);
+    background: rgb(12 46 54 / 0.16);
+    transition: background-color var(--dur-base) var(--ease-out);
+  }
+
+  .switch__thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: calc(1.875rem - 6px);
+    height: calc(1.875rem - 6px);
+    border-radius: 50%;
+    background: var(--calce);
+    box-shadow:
+      0 1px 2px rgb(12 46 54 / 0.2),
+      0 2px 6px rgb(12 46 54 / 0.12);
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+
+  .switch__input:checked + .switch__track {
+    background: var(--garda);
+  }
+
+  .switch__input:checked + .switch__track .switch__thumb {
+    transform: translateX(1.25rem);
+  }
+
+  .switch__input:focus-visible + .switch__track {
+    outline: 2px solid var(--garda);
+    outline-offset: 3px;
+  }
+
+  .booking__cell--submit {
+    display: flex;
+    padding: 0.375rem 0 0;
+  }
+
+  .booking__submit {
+    width: 100%;
+    min-height: 3.5rem;
+    font-size: var(--t-18);
+  }
+
+  /* Nota sotto il box (animali, ospiti, errori): fuori dal flusso, così il titolo non si sposta */
+  .booking__note {
+    position: absolute;
+    top: 100%;
+    left: 1rem;
+    right: 1rem;
+    margin-top: 0.75rem;
+    color: rgb(255 255 255 / 0.92);
+    font-size: var(--t-14);
+    line-height: 1.4;
+  }
+
+  .booking__note.is-error {
+    color: var(--calce);
+    font-weight: 600;
+  }
+
+  @media (min-width: 48rem) {
+    .booking__grid {
+      grid-template-columns: 1fr 1fr 1.1fr;
+      grid-template-areas:
+        'arrival departure guests'
+        'pet pet submit';
+    }
+
+    .booking__cell--guests::before {
+      left: 0;
+      right: auto;
+      top: 0.875rem;
+      bottom: 0.875rem;
+      width: 1px;
+      height: auto;
+    }
+
+    .booking__cell--submit {
+      padding: 0.375rem 0 0 0.375rem;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .booking__grid {
+      grid-template-columns: 1fr 1fr auto auto auto;
+      grid-template-areas: 'arrival departure guests pet submit';
+    }
+
+    .booking__cell--guests,
+    .booking__cell--pet {
+      padding-inline: 1.25rem;
+    }
+
+    .booking__cell--pet::before {
+      left: 0;
+      right: auto;
+      top: 0.875rem;
+      bottom: 0.875rem;
+      width: 1px;
+      height: auto;
+    }
+
+    .switch__text {
+      max-width: 9rem;
+    }
+
+    .booking__cell--submit {
+      padding: 0 0 0 0.25rem;
+      align-items: center;
+    }
+
+    .booking__submit {
+      min-height: 4rem;
+      padding-inline: 2rem;
+      border-radius: calc(var(--r-lg) - 0.375rem);
+    }
+  }
+
+  /* Senza animali ammessi: niente interruttore, le altre celle si riallineano */
+  .booking--no-pet .booking__grid {
+    grid-template-areas:
+      'arrival departure'
+      'guests guests'
+      'submit submit';
+  }
+
+  @media (min-width: 48rem) {
+    .booking--no-pet .booking__grid {
+      grid-template-columns: 1fr 1fr auto auto;
+      grid-template-areas: 'arrival departure guests submit';
+    }
+
+    .booking--no-pet .booking__cell--guests {
+      padding-inline: 1.25rem;
+    }
+
+    .booking--no-pet .booking__cell--submit {
+      padding: 0 0 0 0.25rem;
+      align-items: center;
+    }
+
+    .booking--no-pet .booking__submit {
+      min-height: 4rem;
+      padding-inline: 2rem;
+      border-radius: calc(var(--r-lg) - 0.375rem);
+    }
+  }
+
+  /* ---------- Calendario ---------- */
+  .cal {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--lago);
+    overflow: hidden;
+  }
+
+  .cal[open] {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .cal::backdrop {
+    background: transparent;
+  }
+
+  .cal__scrim {
+    position: absolute;
+    inset: 0;
+    background: rgb(6 26 31 / 0.5);
+  }
+
+  .cal__panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: 94vh;
+    max-height: 94svh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 1.25rem var(--gutter) calc(1rem + env(safe-area-inset-bottom));
+    border-radius: var(--r-lg) var(--r-lg) 0 0;
+    background: var(--calce);
+    box-shadow: var(--shadow-2);
+  }
+
+  .cal__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .cal__title {
+    font-size: var(--t-24);
+    line-height: 1.15;
+  }
+
+  .cal__season {
+    margin-top: 0.375rem;
+    color: var(--pietra);
+    font-size: var(--t-14);
+  }
+
+  .cal__icon-btn {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    transition: background-color var(--dur-fast) var(--ease-out);
+  }
+
+  .cal__icon-btn:hover:not(:disabled) {
+    background: rgb(12 46 54 / 0.06);
+  }
+
+  .cal__icon-btn:disabled {
+    opacity: 0.25;
+    cursor: default;
+  }
+
+  .cal__body {
+    position: relative;
+    margin-top: 1.25rem;
+  }
+
+  .cal__arrow {
+    position: absolute;
+    top: -0.625rem;
+    z-index: 1;
+  }
+
+  .cal__arrow--prev {
+    left: -0.625rem;
+  }
+
+  .cal__arrow--next {
+    right: -0.625rem;
+  }
+
+  .cal__months {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .cal-month {
+    position: relative;
+  }
+
+  .cal-month__title {
+    margin-bottom: 1rem;
+    font-size: var(--t-21);
+    line-height: 1.5rem;
+    text-align: center;
+  }
+
+  .cal-grid {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  .cal-grid th {
+    padding-bottom: 0.5rem;
+    color: var(--pietra);
+    font-size: var(--t-12);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .cal-grid td {
+    padding: 0.125rem 0;
+    text-align: center;
+  }
+
+  .cal-grid td.in-range {
+    background: rgb(14 106 115 / 0.1);
+  }
+
+  .cal-grid td.range-start {
+    background: linear-gradient(to right, transparent 50%, rgb(14 106 115 / 0.1) 50%);
+  }
+
+  .cal-grid td.range-end {
+    background: linear-gradient(to left, transparent 50%, rgb(14 106 115 / 0.1) 50%);
+  }
+
+  .day {
+    position: relative;
+    width: 100%;
+    max-width: 2.75rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    font-size: var(--t-16);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .day:hover:not([aria-disabled='true']) {
+    box-shadow: inset 0 0 0 1px var(--lago);
+  }
+
+  .day[aria-disabled='true'] {
+    color: rgb(12 46 54 / 0.26);
+    cursor: default;
+  }
+
+  .day.is-today::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 18%;
+    width: 4px;
+    height: 4px;
+    margin-left: -2px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .day.is-start,
+  .day.is-end {
+    background: var(--garda);
+    color: var(--calce);
+    font-weight: 600;
+  }
+
+  .day.is-preview-end {
+    box-shadow: inset 0 0 0 1.5px var(--garda);
+  }
+
+  /* Mesi fuori stagione: giorni spenti e un messaggio sopra */
+  .cal-month.is-closed .cal-grid {
+    opacity: 0.45;
+  }
+
+  .cal-month__closed {
+    position: absolute;
+    inset: 2.5rem 0 0;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .cal-month__closed p {
+    max-width: 22ch;
+    padding: 0.75rem 1rem;
+    border-radius: var(--r-md);
+    background: rgb(255 255 255 / 0.9);
+    font-size: var(--t-16);
+    line-height: 1.4;
+  }
+
+  .cal-month__closed .btn {
+    min-height: 2.75rem;
+    padding-inline: 1.25rem;
+    font-size: var(--t-14);
+  }
+
+  .cal__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--linea);
+  }
+
+  .cal__status {
+    flex: 1 1 14rem;
+    font-size: var(--t-16);
+    font-weight: 500;
+  }
+
+  .cal__status.is-error {
+    color: var(--errore);
+  }
+
+  .cal__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+  }
+
+  .cal__clear {
+    min-height: 2.75rem;
+    padding-inline: 1rem;
+    border-radius: var(--r-pill);
+    font-size: var(--t-16);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .cal__clear:disabled,
+  .cal__done:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  .cal__done:disabled:active {
+    transform: none;
+  }
+
+  @media (min-width: 48rem) {
+    .cal[open] {
+      align-items: center;
+    }
+
+    .cal__panel {
+      width: min(48rem, calc(100% - 3rem));
+      max-height: calc(100vh - 3rem);
+      max-height: calc(100svh - 3rem);
+      padding: 1.75rem 2rem 1.5rem;
+      border-radius: var(--r-lg);
+    }
+
+    .cal__months {
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+  }
+</style>

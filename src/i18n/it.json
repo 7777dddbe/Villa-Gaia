@@ -1,0 +1,196 @@
+{
+  "lang": "it",
+  "locale": "it-IT",
+  "ogLocale": "it_IT",
+  "meta": {
+    "title": "Villa Gaia | Appartamenti con piscina a Malcesine, Lago di Garda",
+    "description": "Tre appartamenti vacanza con piscina, giardino e parcheggio privato a Malcesine, sul Lago di Garda. A 300 metri dal lago, in un uliveto tranquillo, a 1 km dal centro storico. Prenota diretto con noi."
+  },
+  "nav": {
+    "skip": "Vai al contenuto",
+    "apartments": "Appartamenti",
+    "location": "Posizione",
+    "reviews": "Recensioni",
+    "contact": "Contatti",
+    "menu": "Menu",
+    "close": "Chiudi il menu",
+    "language": "Lingua",
+    "home": "Villa Gaia, pagina iniziale",
+    "villa": "La villa"
+  },
+  "langNames": {
+    "en": "English",
+    "de": "Deutsch",
+    "it": "Italiano"
+  },
+  "hero": {
+    "line1": "Villa Gaia",
+    "line2": "Malcesine",
+    "subtitle": "Appartamenti con piscina sul Lago di Garda.",
+    "photoAlt": "Il Lago di Garda al tramonto, visto sopra Villa Gaia a Malcesine",
+    "winkLabel": "Un segreto sulla foto",
+    "winkText": "Il tramonto sul lago visto dagli ulivi di Villa Gaia.",
+    "titleSuffix": ", Lago di Garda"
+  },
+  "search": {
+    "title": "Verifica disponibilità",
+    "arrival": "Arrivo",
+    "departure": "Partenza",
+    "addDate": "Scegli la data",
+    "guests": "Ospiti",
+    "guestsDecrease": "Togli un ospite",
+    "guestsIncrease": "Aggiungi un ospite",
+    "pet": "Viaggio con un animale",
+    "submit": "Verifica disponibilità",
+    "seasonNote": "Aperto dal {apertura} al {chiusura}. Soggiorno minimo {minimo} notti.",
+    "calendarTitle": "Scegli le date",
+    "chooseArrival": "Scegli il giorno di arrivo",
+    "chooseDeparture": "Ora scegli il giorno di partenza",
+    "prevMonth": "Mese precedente",
+    "nextMonth": "Mese successivo",
+    "clear": "Cancella le date",
+    "done": "Fatto",
+    "closed": "Chiuso fuori stagione",
+    "errorDates": "Scegli le date di arrivo e di partenza.",
+    "errorMinStay": "Il soggiorno minimo è di {n} notti.",
+    "nightsOne": "1 notte",
+    "nightsOther": "{n} notti",
+    "guestsOne": "1 ospite",
+    "guestsOther": "{n} ospiti",
+    "close": "Chiudi",
+    "range": "Dal {arrivo} al {partenza}",
+    "petHint": "Gli animali sono ammessi in {nomi}.",
+    "guestsMax": "Il nostro appartamento più grande ha {n} posti letto.",
+    "closedUntil": "Chiuso fuori stagione. Riapriamo il {data}.",
+    "goToSeason": "Vai a {mese}",
+    "minStayDay": "Soggiorno minimo {n} notti"
+  },
+  "results": {
+    "title": "Liberi nelle tue date",
+    "summary": "Dal {arrivo} al {partenza}, {notti}, {ospiti}",
+    "booking": "Booking.com",
+    "direct": "Prezzo diretto, risparmi {risparmio}",
+    "total": "Totale per {notti}",
+    "average": "In media {prezzo} a notte",
+    "tax": "Tassa di soggiorno esclusa: {euro} a persona a notte, da pagare in contanti all'arrivo.",
+    "petFee": "Include il supplemento animale di {prezzo}.",
+    "book": "Prenota su WhatsApp",
+    "loading": "Verifico la disponibilità",
+    "noneTitle": "Nessun appartamento è libero in queste date",
+    "noneText": "Prova con altre date, oppure scrivici su WhatsApp e cerchiamo insieme una soluzione.",
+    "noneCta": "Scrivici su WhatsApp",
+    "error": "Non è stato possibile verificare la disponibilità. Riprova tra poco, oppure scrivici su WhatsApp.",
+    "change": "Cambia le date",
+    "noneGuests": "Gli appartamenti liberi in queste date hanno al massimo {n} posti letto.",
+    "nonePet": "Gli animali sono ammessi solo in {nomi}.",
+    "priceMissing": "Scrivici per il prezzo di queste date.",
+    "openWhatsApp": "Apre WhatsApp con il messaggio già scritto."
+  },
+  "apartments": {
+    "title": "Gli appartamenti",
+    "intro": "Tre appartamenti nel verde, al piano terra e al primo piano, tutti con terrazza o balcone.",
+    "sleeps": "{n} posti letto",
+    "floor": "Piano",
+    "view": "Vista",
+    "size": "Superficie",
+    "beds": "Letti",
+    "services": "Incluso",
+    "petsWelcome": "Animali ammessi",
+    "prevPhoto": "Foto precedente",
+    "nextPhoto": "Foto successiva",
+    "photoOf": "Foto {n} di {total}",
+    "tabs": "Scegli un appartamento",
+    "gallery": "Foto di {nome}",
+    "pets": "Animali",
+    "petsYes": "Ammessi",
+    "petsNo": "Non ammessi",
+    "sleepsLabel": "Posti letto",
+    "type": "Tipo",
+    "book": "Verifica le date per {nome}"
+  },
+  "types": {
+    "appartamento": "Appartamento"
+  },
+  "floors": {
+    "primo": "Primo piano",
+    "terra": "Piano terra"
+  },
+  "views": {
+    "giardino": "Giardino",
+    "lago_ulivi": "Lago e ulivi"
+  },
+  "beds": {
+    "matrimoniale": {
+      "one": "camera matrimoniale",
+      "other": "camere matrimoniali"
+    },
+    "divano_letto_singolo": {
+      "one": "divano letto singolo",
+      "other": "divani letto singoli"
+    }
+  },
+  "services": {
+    "parcheggio": "Parcheggio privato",
+    "wifi": "Wi-Fi",
+    "cucina": "Cucina completa",
+    "tv": "TV satellitare",
+    "riscaldamento": "Riscaldamento",
+    "piscina": "Piscina con lettini e ombrelloni",
+    "terrazza": "Terrazza o balcone"
+  },
+  "location": {
+    "title": "Dove siamo",
+    "intro": "A Malcesine, sulla sponda orientale del Lago di Garda.",
+    "walk": "{n} min a piedi",
+    "places": {
+      "funivia": "Funivia del Monte Baldo",
+      "spiaggia": "Spiaggia e lago",
+      "centro": "Centro storico",
+      "castello": "Castello Scaligero"
+    },
+    "openMap": "Apri in Google Maps",
+    "walkTitle": "A piedi da Villa Gaia",
+    "mapLabel": "Mappa di Malcesine",
+    "house": "Villa Gaia"
+  },
+  "reviews": {
+    "title": "Cosa dicono gli ospiti",
+    "score": "{voto} su {su}",
+    "source": "Voto degli ospiti su FeWo-direkt, {n} recensioni",
+    "readMore": "Tutte le recensioni su Booking.com"
+  },
+  "contact": {
+    "title": "Prenota diretto",
+    "intro": "Scrivici su WhatsApp o via email. La villa è gestita di persona dal proprietario: ti rispondiamo noi.",
+    "whatsapp": "Scrivici su WhatsApp",
+    "email": "Scrivi una email",
+    "emailLabel": "Email",
+    "addressLabel": "Indirizzo",
+    "photoAlt": "Villa Gaia vista dall'alto, con la piscina e il lago"
+  },
+  "footer": {
+    "address": "Indirizzo",
+    "stay": "Il soggiorno",
+    "checkIn": "Check-in dalle {ora} alle {fino}",
+    "checkOut": "Check-out entro le {ora}",
+    "rules": "Vietato fumare, niente feste",
+    "contact": "Contatti",
+    "codes": "Codici identificativi",
+    "rights": "© {anno} Villa Gaia",
+    "rulesNoPets": "Vietato fumare, niente feste, niente animali"
+  },
+  "villa": {
+    "eyebrow": "La villa",
+    "title": "Tra gli ulivi, a due passi dal lago.",
+    "text": "Villa Gaia è una piccola villa in una zona tranquilla di Malcesine, in mezzo a un uliveto. Il lago e la spiaggia sono a circa 300 metri, il centro storico a circa 1 km lungo un sentiero pedonale. Gli appartamenti sono gestiti di persona dal proprietario.",
+    "features": [
+      "Piscina con lettini e ombrelloni",
+      "Giardino e uliveto",
+      "Parcheggio privato",
+      "Lago e spiaggia a 300 m",
+      "Ideale per escursioni e mountain bike"
+    ],
+    "galleryLabel": "Foto della villa",
+    "alt": "Foto di Villa Gaia, {n} di {total}"
+  }
+}

@@ -1,0 +1,196 @@
+{
+  "lang": "de",
+  "locale": "de-DE",
+  "ogLocale": "de_DE",
+  "meta": {
+    "title": "Villa Gaia | Ferienwohnungen mit Pool in Malcesine, Gardasee",
+    "description": "Drei Ferienwohnungen mit Pool, Garten und Privatparkplatz in Malcesine am Gardasee. 300 Meter vom See entfernt, in einem ruhigen Olivenhain, 1 km von der Altstadt. Direkt bei uns buchen."
+  },
+  "nav": {
+    "skip": "Zum Inhalt springen",
+    "apartments": "Wohnungen",
+    "location": "Lage",
+    "reviews": "Bewertungen",
+    "contact": "Kontakt",
+    "menu": "Menü",
+    "close": "Menü schließen",
+    "language": "Sprache",
+    "home": "Villa Gaia, Startseite",
+    "villa": "Die Villa"
+  },
+  "langNames": {
+    "en": "English",
+    "de": "Deutsch",
+    "it": "Italiano"
+  },
+  "hero": {
+    "line1": "Villa Gaia",
+    "line2": "Malcesine",
+    "subtitle": "Ferienwohnungen mit Pool am Gardasee.",
+    "photoAlt": "Der Gardasee bei Sonnenuntergang, über der Villa Gaia in Malcesine",
+    "winkLabel": "Ein Geheimnis zum Foto",
+    "winkText": "Der Sonnenuntergang über dem See, gesehen von den Olivenbäumen der Villa Gaia.",
+    "titleSuffix": ", Gardasee"
+  },
+  "search": {
+    "title": "Verfügbarkeit prüfen",
+    "arrival": "Anreise",
+    "departure": "Abreise",
+    "addDate": "Datum wählen",
+    "guests": "Gäste",
+    "guestsDecrease": "Einen Gast entfernen",
+    "guestsIncrease": "Einen Gast hinzufügen",
+    "pet": "Ich reise mit Haustier",
+    "submit": "Verfügbarkeit prüfen",
+    "seasonNote": "Geöffnet vom {apertura} bis {chiusura}. Mindestaufenthalt {minimo} Nächte.",
+    "calendarTitle": "Reisedaten wählen",
+    "chooseArrival": "Wählen Sie Ihr Anreisedatum",
+    "chooseDeparture": "Wählen Sie jetzt Ihr Abreisedatum",
+    "prevMonth": "Vorheriger Monat",
+    "nextMonth": "Nächster Monat",
+    "clear": "Daten löschen",
+    "done": "Fertig",
+    "closed": "Außerhalb der Saison geschlossen",
+    "errorDates": "Wählen Sie Anreise- und Abreisedatum.",
+    "errorMinStay": "Der Mindestaufenthalt beträgt {n} Nächte.",
+    "nightsOne": "1 Nacht",
+    "nightsOther": "{n} Nächte",
+    "guestsOne": "1 Gast",
+    "guestsOther": "{n} Gäste",
+    "close": "Schließen",
+    "range": "{arrivo} bis {partenza}",
+    "petHint": "Haustiere sind in {nomi} willkommen.",
+    "guestsMax": "Unsere größte Wohnung bietet Platz für {n} Personen.",
+    "closedUntil": "Außerhalb der Saison geschlossen. Wir öffnen wieder am {data}.",
+    "goToSeason": "Zu {mese}",
+    "minStayDay": "Mindestaufenthalt {n} Nächte"
+  },
+  "results": {
+    "title": "Frei an Ihren Daten",
+    "summary": "{arrivo} bis {partenza}, {notti}, {ospiti}",
+    "booking": "Booking.com",
+    "direct": "Direktpreis, Sie sparen {risparmio}",
+    "total": "Gesamt für {notti}",
+    "average": "Durchschnittlich {prezzo} pro Nacht",
+    "tax": "Kurtaxe nicht enthalten: {euro} pro Person und Nacht, bar bei Ankunft zu zahlen.",
+    "petFee": "Inklusive Haustierzuschlag von {prezzo}.",
+    "book": "Über WhatsApp buchen",
+    "loading": "Verfügbarkeit wird geprüft",
+    "noneTitle": "Für diese Daten ist keine Wohnung frei",
+    "noneText": "Versuchen Sie andere Daten oder schreiben Sie uns auf WhatsApp, dann suchen wir gemeinsam eine Lösung.",
+    "noneCta": "Auf WhatsApp schreiben",
+    "error": "Die Verfügbarkeit konnte gerade nicht geprüft werden. Versuchen Sie es gleich noch einmal oder schreiben Sie uns auf WhatsApp.",
+    "change": "Daten ändern",
+    "noneGuests": "Die an diesen Daten freien Wohnungen bieten Platz für höchstens {n} Personen.",
+    "nonePet": "Haustiere sind nur in {nomi} willkommen.",
+    "priceMissing": "Schreiben Sie uns für den Preis an diesen Daten.",
+    "openWhatsApp": "Öffnet WhatsApp mit Ihrer fertigen Nachricht."
+  },
+  "apartments": {
+    "title": "Die Wohnungen",
+    "intro": "Drei Wohnungen im Grünen, im Erdgeschoss und im ersten Stock, alle mit Terrasse oder Balkon.",
+    "sleeps": "Für {n} Personen",
+    "floor": "Etage",
+    "view": "Ausblick",
+    "size": "Größe",
+    "beds": "Betten",
+    "services": "Inklusive",
+    "petsWelcome": "Haustiere willkommen",
+    "prevPhoto": "Vorheriges Foto",
+    "nextPhoto": "Nächstes Foto",
+    "photoOf": "Foto {n} von {total}",
+    "tabs": "Wohnung auswählen",
+    "gallery": "Fotos von {nome}",
+    "pets": "Haustiere",
+    "petsYes": "Willkommen",
+    "petsNo": "Nicht erlaubt",
+    "sleepsLabel": "Personen",
+    "type": "Typ",
+    "book": "Daten für {nome} prüfen"
+  },
+  "types": {
+    "appartamento": "Ferienwohnung"
+  },
+  "floors": {
+    "primo": "Erster Stock",
+    "terra": "Erdgeschoss"
+  },
+  "views": {
+    "giardino": "Garten",
+    "lago_ulivi": "See und Olivenbäume"
+  },
+  "beds": {
+    "matrimoniale": {
+      "one": "Doppelzimmer",
+      "other": "Doppelzimmer"
+    },
+    "divano_letto_singolo": {
+      "one": "Schlafsofa für 1 Person",
+      "other": "Schlafsofas für 1 Person"
+    }
+  },
+  "services": {
+    "parcheggio": "Privatparkplatz",
+    "wifi": "WLAN",
+    "cucina": "Voll ausgestattete Küche",
+    "tv": "Satelliten-TV",
+    "riscaldamento": "Heizung",
+    "piscina": "Pool mit Liegestühlen und Sonnenschirmen",
+    "terrazza": "Terrasse oder Balkon"
+  },
+  "location": {
+    "title": "Lage",
+    "intro": "In Malcesine, am Ostufer des Gardasees.",
+    "walk": "{n} Min. zu Fuß",
+    "places": {
+      "funivia": "Monte-Baldo-Seilbahn",
+      "spiaggia": "Strand und See",
+      "centro": "Altstadt",
+      "castello": "Skaligerburg"
+    },
+    "openMap": "In Google Maps öffnen",
+    "walkTitle": "Zu Fuß ab der Villa Gaia",
+    "mapLabel": "Karte von Malcesine",
+    "house": "Villa Gaia"
+  },
+  "reviews": {
+    "title": "Das sagen unsere Gäste",
+    "score": "{voto} von {su}",
+    "source": "Gästebewertung auf FeWo-direkt, {n} Bewertungen",
+    "readMore": "Alle Bewertungen auf Booking.com"
+  },
+  "contact": {
+    "title": "Direkt buchen",
+    "intro": "Schreiben Sie uns über WhatsApp oder per E-Mail. Der Eigentümer führt die Villa persönlich, Sie sprechen immer direkt mit uns.",
+    "whatsapp": "Auf WhatsApp schreiben",
+    "email": "E-Mail senden",
+    "emailLabel": "E-Mail",
+    "addressLabel": "Adresse",
+    "photoAlt": "Die Villa Gaia von oben, mit Pool und See"
+  },
+  "footer": {
+    "address": "Adresse",
+    "stay": "Ihr Aufenthalt",
+    "checkIn": "Check-in von {ora} bis {fino} Uhr",
+    "checkOut": "Check-out bis {ora} Uhr",
+    "rules": "Rauchen und Partys nicht erlaubt",
+    "contact": "Kontakt",
+    "codes": "Registrierungscodes",
+    "rights": "© {anno} Villa Gaia",
+    "rulesNoPets": "Rauchen, Partys und Haustiere nicht erlaubt"
+  },
+  "villa": {
+    "eyebrow": "Die Villa",
+    "title": "Zwischen Olivenbäumen, nur wenige Schritte vom See.",
+    "text": "Die Villa Gaia ist eine kleine Villa in ruhiger Lage von Malcesine, mitten in einem Olivenhain. See und Strand liegen etwa 300 Meter entfernt, die Altstadt etwa 1 km über einen Fußweg. Der Eigentümer betreut die Wohnungen persönlich.",
+    "features": [
+      "Pool mit Liegestühlen und Sonnenschirmen",
+      "Garten und Olivenhain",
+      "Privatparkplatz",
+      "See und Strand 300 m entfernt",
+      "Ideal für Wanderungen und Mountainbike-Touren"
+    ],
+    "galleryLabel": "Fotos der Villa",
+    "alt": "Foto der Villa Gaia, {n} von {total}"
+  }
+}

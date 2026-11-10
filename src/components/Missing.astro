@@ -1,0 +1,12 @@
+---
+import { PLACEHOLDER } from '../lib/placeholder';
+
+interface Props {
+  /** Optional hint shown on hover, e.g. which data is missing. */
+  what?: string;
+}
+
+const { what } = Astro.props;
+---
+
+<span class="da-completare" title={what}>{PLACEHOLDER}</span>

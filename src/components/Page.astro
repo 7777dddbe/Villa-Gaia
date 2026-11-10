@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import Apartments from './Apartments.astro';
+import Villa from './Villa.astro';
+import BookingBox from './BookingBox.astro';
+import Hero from './Hero.astro';
+import Results from './Results.astro';
+import Location from './Location.astro';
+import Reviews from './Reviews.astro';
+import Contact from './Contact.astro';
+import type { Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+<Base lang={lang}>
+  <Hero lang={lang}>
+    <BookingBox lang={lang} />
+  </Hero>
+
+  <Results lang={lang} />
+
+  <Apartments lang={lang} />
+
+  <Villa lang={lang} />
+
+  <Location lang={lang} />
+
+  <Reviews lang={lang} />
+
+  <Contact lang={lang} />
+</Base>
+

@@ -1,0 +1,84 @@
+---
+import { PLACEHOLDER } from '../lib/placeholder';
+
+interface Props {
+  /** What photo goes here, e.g. "Vista lago dalla terrazza". */
+  label: string;
+  tone?: 'lake' | 'garden';
+}
+
+const { label, tone = 'lake' } = Astro.props;
+---
+
+<div class:list={['placeholder', `placeholder--${tone}`]} role="img" aria-label={`${PLACEHOLDER} ${label}`}>
+  <svg class="placeholder__ridge" viewBox="0 0 1600 400" preserveAspectRatio="none" aria-hidden="true">
+    <path
+      class="placeholder__far"
+      d="M0 260 L120 210 L210 228 L330 150 L430 178 L560 96 L690 140 L780 118 L900 170 L1010 132 L1130 186 L1250 150 L1380 204 L1490 180 L1600 214 L1600 400 L0 400 Z"
+    ></path>
+    <path
+      class="placeholder__near"
+      d="M0 318 L140 286 L260 300 L380 262 L520 292 L640 270 L790 304 L930 280 L1060 310 L1200 288 L1340 312 L1470 296 L1600 316 L1600 400 L0 400 Z"
+    ></path>
+  </svg>
+  <span class="placeholder__label">
+    <span class="da-completare">{PLACEHOLDER}</span>
+    <span>Foto: {label}</span>
+  </span>
+</div>
+
+<style>
+  .placeholder {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: linear-gradient(in oklch to bottom, #cfe0e2 0%, #9cc3c6 34%, #3f8b93 58%, #0e5a62 82%, #0b3e45 100%);
+  }
+
+  .placeholder--garden {
+    background: linear-gradient(in oklch to bottom, #dfe6dc 0%, #b8c8ae 40%, #7f9668 70%, #56693f 100%);
+  }
+
+  .placeholder__ridge {
+    position: absolute;
+    inset: auto 0 34% 0;
+    width: 100%;
+    height: 42%;
+  }
+
+  .placeholder__far {
+    fill: #7f9ea4;
+    opacity: 0.55;
+  }
+
+  .placeholder__near {
+    fill: #4e7980;
+    opacity: 0.6;
+  }
+
+  .placeholder--garden .placeholder__far {
+    fill: #8fa181;
+  }
+
+  .placeholder--garden .placeholder__near {
+    fill: #66804f;
+  }
+
+  .placeholder__label {
+    position: absolute;
+    right: 1rem;
+    top: var(--placeholder-label-top, 1rem);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: calc(100% - 2rem);
+    padding: 0.375rem 0.75rem 0.375rem 0.375rem;
+    border-radius: var(--r-pill);
+    background: rgb(255 255 255 / 0.82);
+    color: var(--lago);
+    font-size: var(--t-14);
+    font-weight: 500;
+  }
+</style>

@@ -1,0 +1,170 @@
+---
+import Missing from './Missing.astro';
+import data from '../config/recensioni.json';
+import { dictionary, fill, type Lang } from '../i18n';
+import { isMissing, PLACEHOLDER } from '../lib/placeholder';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = dictionary(lang);
+const r = t.reviews;
+const { booking } = data;
+interface Review {
+  nome: string;
+  paese: string;
+  data: string;
+  appartamento: string | null;
+  lingua: string;
+  testo: string;
+}
+const recensioni = data.recensioni as Review[];
+const number = new Intl.NumberFormat(t.locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+/** A value still marked [DA COMPLETARE]: show the chip, then whatever hint follows it. */
+const rest = (value: string | null) => (value ?? '').replace(PLACEHOLDER, '').trim();
+---
+
+<section id="reviews" class="section reviews" aria-labelledby="reviews-title">
+  <div class:list={['container', 'reviews__grid', { 'reviews__grid--solo': recensioni.length === 0 }]}>
+    <div class="reviews__score" data-reveal>
+      <h2 id="reviews-title" class="section__title">{r.title}</h2>
+      <p class="score">
+        <span class="score__value">{number.format(booking.voto)}</span>
+        <span class="score__scale">{fill(r.score, { voto: '', su: booking.su }).trim()}</span>
+      </p>
+      <p class="score__source">{fill(r.source, { n: booking.numeroRecensioni ?? '' })}</p>
+      {booking.link && <a class="score__link" href={booking.link} target="_blank" rel="noopener">{r.readMore}</a>}
+    </div>
+
+    {recensioni.length > 0 && <ul class="reviews__list">
+      {
+        recensioni.map((review) => (
+          <li class="review">
+            <blockquote lang={review.lingua}>
+              <p class="review__text">
+                {isMissing(review.testo) ? (
+                  <>
+                    <Missing what="recensioni.json" /> {rest(review.testo)}
+                  </>
+                ) : (
+                  review.testo
+                )}
+              </p>
+            </blockquote>
+            <p class="review__author">
+              {isMissing(review.nome) ? <Missing what="nome" /> : review.nome}
+              <span class="review__meta">
+                {isMissing(review.paese) ? <Missing what="paese" /> : review.paese}
+                {', '}
+                {isMissing(review.data) ? <Missing what="data" /> : review.data}
+              </span>
+            </p>
+          </li>
+        ))
+      }
+    </ul>}
+  </div>
+</section>
+
+<style is:global>
+  .reviews {
+    background: var(--calcare);
+  }
+
+  .reviews__grid {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .score {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-top: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  .score__value {
+    color: var(--garda);
+    font-family: var(--font-display);
+    font-size: clamp(6rem, 16vw, 10rem);
+    font-weight: 700;
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+  }
+
+  .score__scale {
+    color: var(--pietra);
+    font-size: var(--t-21);
+  }
+
+  .score__source {
+    margin-top: 1rem;
+    font-weight: 600;
+  }
+
+  .score__link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    color: var(--garda);
+    font-weight: 600;
+  }
+
+  .reviews__list {
+    display: grid;
+    gap: 1.25rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .review {
+    padding: clamp(1.5rem, 3vw, 2rem);
+    border-radius: var(--r-lg);
+    background: var(--calce);
+    box-shadow: var(--shadow-1);
+  }
+
+  .review blockquote {
+    margin: 0;
+  }
+
+  .review__text {
+    font-family: var(--font-display);
+    font-size: var(--t-21);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.45;
+  }
+
+  .review__author {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    margin-top: 1.25rem;
+    font-weight: 600;
+  }
+
+  .review__meta {
+    color: var(--pietra);
+    font-size: var(--t-14);
+    font-weight: 400;
+  }
+
+  @media (min-width: 56rem) {
+    .reviews__grid {
+      grid-template-columns: 1fr 1.6fr;
+      align-items: start;
+    }
+
+    .reviews__grid--solo {
+      grid-template-columns: 1fr;
+    }
+
+    .reviews__score {
+      position: sticky;
+      top: calc(var(--header-h) + 2rem);
+    }
+  }
+</style>

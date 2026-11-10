@@ -1,0 +1,9 @@
+{
+  "_leggimi": "PRENOTAZIONI FINTE, usate solo finché nessun calendario è collegato (variabili GOOGLE_* e ICAL_* mancanti su Netlify). Ora la lista è vuota: tutti gli appartamenti risultano liberi. Per provare un appartamento occupato aggiungi una riga come quella di esempio qui sotto. 'al' è il giorno di partenza: quel giorno l'appartamento è di nuovo libero per chi arriva.",
+  "_esempio": {
+    "appartamento": "gaia1",
+    "dal": "2027-07-03",
+    "al": "2027-07-17"
+  },
+  "prenotazioni": []
+}

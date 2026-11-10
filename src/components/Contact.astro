@@ -1,0 +1,212 @@
+---
+import { Picture } from 'astro:assets';
+import Missing from './Missing.astro';
+import PhotoPlaceholder from './PhotoPlaceholder.astro';
+import site from '../config/sito.json';
+import { dictionary, fill, type Lang } from '../i18n';
+import { photosOf } from '../lib/photos';
+import { isMissing } from '../lib/placeholder';
+import { hasWhatsApp, whatsappUrl } from '../lib/whatsapp';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = dictionary(lang);
+const c = t.contact;
+const { contatti, indirizzo, orari, prenotazione } = site;
+const photo = photosOf('casa')[0];
+const chatIcon =
+  'M12 3.5c-4.7 0-8.5 3.4-8.5 7.6 0 1.7.6 3.2 1.6 4.4L4 20.5l5.3-1.7c.9.3 1.8.4 2.7.4 4.7 0 8.5-3.4 8.5-7.6S16.7 3.5 12 3.5Z';
+---
+
+<section id="contact" class="section contact" aria-labelledby="contact-title">
+  <div class="container contact__grid">
+    <div class="contact__photo" data-reveal-frame>
+      {
+        photo ? (
+          <Picture
+            src={photo}
+            alt={c.photoAlt}
+            formats={['avif', 'webp']}
+            widths={[640, 960, 1280, 1800]}
+            sizes="(min-width: 56rem) 45vw, 100vw"
+            loading="lazy"
+          />
+        ) : (
+          <PhotoPlaceholder label="la casa (cartella src/assets/foto/casa)" tone="garden" />
+        )
+      }
+    </div>
+
+    <div class="contact__body">
+      <h2 id="contact-title" class="section__title" data-reveal>{c.title}</h2>
+      <p class="section__intro" data-reveal>{fill(c.intro, { sconto: prenotazione.scontoDirettoPercentuale })}</p>
+
+      <div class="contact__actions">
+        <a class="btn contact__whatsapp" href={whatsappUrl()} target="_blank" rel="noopener" data-wa-link>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d={chatIcon}></path></svg>
+          {c.whatsapp}
+          <span class="visually-hidden">. {t.results.openWhatsApp}</span>
+        </a>
+        {!hasWhatsApp && <Missing what="sito.json → contatti.whatsapp" />}
+      </div>
+
+      <dl class="contact__facts">
+        <div>
+          <dt>{c.emailLabel}</dt>
+          <dd>
+            {isMissing(contatti.email) ? <Missing what="sito.json → contatti.email" /> : <a href={`mailto:${contatti.email}`}>{contatti.email}</a>}
+          </dd>
+        </div>
+        <div>
+          <dt>{c.addressLabel}</dt>
+          <dd>{indirizzo.via}, {indirizzo.cap} {indirizzo.citta} ({indirizzo.provincia})</dd>
+        </div>
+        <div>
+          <dt>{t.footer.stay}</dt>
+          <dd>
+            {fill(t.footer.checkIn, { ora: orari.checkIn, fino: orari.checkInFino })}
+            <br />
+            {fill(t.footer.checkOut, { ora: orari.checkOut })}
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- Pulsante WhatsApp fisso in basso, solo su telefono -->
+<a class="wa-bar" href={whatsappUrl()} target="_blank" rel="noopener" data-wa-link data-wa-bar aria-hidden="true" tabindex="-1">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d={chatIcon}></path></svg>
+  {c.whatsapp}
+</a>
+
+<style is:global>
+  .contact__grid {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .contact__photo {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--r-lg);
+    background: var(--calcare);
+  }
+
+  .contact__photo picture,
+  .contact__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 45% center;
+  }
+
+  .contact__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .contact__whatsapp {
+    min-height: 3.75rem;
+    padding-inline: 2rem;
+    font-size: var(--t-18);
+  }
+
+  .contact__whatsapp svg,
+  .wa-bar svg {
+    width: 1.375rem;
+    height: 1.375rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linejoin: round;
+  }
+
+  .contact__facts {
+    margin-top: 2.5rem;
+  }
+
+  .contact__facts > div {
+    display: grid;
+    grid-template-columns: 8.5rem 1fr;
+    gap: 1rem;
+    padding-block: 0.875rem;
+    border-top: 1px solid var(--linea);
+  }
+
+  .contact__facts dt {
+    color: var(--pietra);
+  }
+
+  .contact__facts dd {
+    margin: 0;
+  }
+
+  .contact__facts a {
+    color: var(--garda);
+    font-weight: 600;
+  }
+
+  /* Barra WhatsApp su telefono: entra dal basso dopo il box di ricerca */
+  .wa-bar {
+    position: fixed;
+    left: 1rem;
+    right: 1rem;
+    bottom: calc(0.75rem + env(safe-area-inset-bottom));
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-height: 3.5rem;
+    border-radius: var(--r-pill);
+    background: var(--garda);
+    color: var(--calce);
+    font-weight: 600;
+    font-size: var(--t-18);
+    text-decoration: none;
+    box-shadow:
+      0 8px 24px -6px rgb(12 46 54 / 0.35),
+      0 2px 6px rgb(12 46 54 / 0.15);
+    transform: translateY(calc(100% + 1.5rem));
+    transition: transform 0.4s var(--ease-out);
+  }
+
+  .wa-bar.is-visible {
+    transform: none;
+  }
+
+  .wa-bar:active {
+    transform: scale(0.98);
+  }
+
+  @media (max-width: 47.99rem) {
+    body {
+      padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .wa-bar {
+      display: none;
+    }
+  }
+
+  @media (min-width: 56rem) {
+    .contact__grid {
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: clamp(3rem, 7vw, 6rem);
+    }
+
+    .contact__photo {
+      aspect-ratio: 4 / 5;
+    }
+  }
+</style>
